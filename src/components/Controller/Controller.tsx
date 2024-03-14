@@ -256,14 +256,17 @@ const Controller = () => {
 
     console.log("Downloading firmware update...", fileBlob.filename);
 
-    await write(`mkdir /FIRMWARE`, false, true);
+    await write(`mkdir /SYS`, false, true);
+    await write(`mkdir /SYS/FIRMWARE`, false, true); 
+    //fatfs didn't implemented rescu mkdir and hackrf ain't have standard cpp fs lib
+    //this is a workaround and i'll take care of it later
     await uploadFile(
-      `/FIRMWARE/${fileBlob.filename}`,
+      `/SYS/FIRMWARE/${fileBlob.filename}`,
       new Uint8Array(await fileBlob.blob.arrayBuffer()),
       setUpdateStatus
     );
 
-    await write(`flash /FIRMWARE/${fileBlob.filename}`, false, true);
+    await write(`flash /SYS/FIRMWARE/${fileBlob.filename}`, false, true);
     console.log("DONE! firmware complete. Rebooting...");
     alert("Firmware update complete! Please wait for your device to reboot.");
   };
@@ -275,14 +278,17 @@ const Controller = () => {
 
     console.log("Downloading firmware update...", fileBlob.filename);
 
-    await write(`mkdir /FIRMWARE`, false, true);
+    await write(`mkdir /SYS`, false, true);
+    await write(`mkdir /SYS/FIRMWARE`, false, true); 
+    //fatfs didn't implemented rescu mkdir and hackrf ain't have standard cpp fs lib
+    //this is a workaround and i'll take care of it later
     await uploadFile(
-      `/FIRMWARE/${fileBlob.filename}`,
+      `/SYS/FIRMWARE/${fileBlob.filename}`,
       new Uint8Array(await fileBlob.blob.arrayBuffer()),
       setUpdateStatus
     );
 
-    await write(`flash /FIRMWARE/${fileBlob.filename}`, false, true);
+    await write(`flash /SYS/FIRMWARE/${fileBlob.filename}`, false, true);
     console.log("DONE! firmware complete. Rebooting...");
     alert("Firmware update complete! Please wait for your device to reboot.");
   };
@@ -640,7 +646,7 @@ const Controller = () => {
             <button
               disabled={disableTransmitAction}
               onClick={() => {
-                setSelectedUploadFolder("/FIRMWARE");
+                setSelectedUploadFolder("/SYS/FIRMWARE");
                 firmwareFileInputRef.current?.click();
               }}
               className="rounded bg-blue-400 p-2 text-white disabled:opacity-50"
